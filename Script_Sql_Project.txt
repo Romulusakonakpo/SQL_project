@@ -1,0 +1,850 @@
+-- Sql_project_group
+-- SQL_script
+
+DROP DATABASE IF EXISTS STUDENTS;
+CREATE DATABASE STUDENTS;
+USE STUDENTS;
+
+DROP TABLE IF EXISTS Student ; 
+CREATE TABLE Student (id_student INT AUTO_INCREMENT NOT NULL, stu_name VARCHAR(50), stu_first_name VARCHAR(50), stu_date_birth DATE, stu_adress_resid VARCHAR(50), stu_univ_mail VARCHAR(50), stu_phone_num VARCHAR(50), stu_gender VARCHAR(10), stu_nationality VARCHAR(50), stu_current_level VARCHAR(25), id_department INT,
+ id_accomodation INT,
+  id_scholarship INT,
+  id_internship INT,
+  id_job INT,
+  id_relation_inter INT,
+  id_insertion INT,
+  PRIMARY KEY (id_student)); 
+
+DROP TABLE IF EXISTS Course ; 
+CREATE TABLE Course (id_course INT AUTO_INCREMENT NOT NULL, course_title VARCHAR(50), disciplinary_area VARCHAR(50), credits_ECTS INT, start_time_course TIME, end_time_course TIME, number_hours float (4,2), day_of_course VARCHAR(50), method_delivery_course VARCHAR(50), type_course VARCHAR(50), PRIMARY KEY (id_course)); 
+
+DROP TABLE IF EXISTS Professor ; 
+CREATE TABLE Professor (id_prof INT AUTO_INCREMENT NOT NULL, prof_name VARCHAR(50), first_name_prof VARCHAR(50), e_mail_prof VARCHAR(50), phone_num_prof VARCHAR(50), expertise_field VARCHAR(50), availability_prof VARCHAR(50), office_adress VARCHAR(50), department_prof VARCHAR(50), status_prof VARCHAR(25), PRIMARY KEY (id_prof));  
+
+
+DROP TABLE IF EXISTS Registrations ; 
+CREATE TABLE Registrations (id_registrations INT AUTO_INCREMENT NOT NULL, id_student INT NOT NULL, id_course INT NOT NULL, semester_regist INT, year_integration YEAR, status_registration VARCHAR(50), date_regist DATE, univ_component VARCHAR(50), sector_regist VARCHAR(50), id_department INT, PRIMARY KEY (id_registrations), 
+FOREIGN KEY (id_student) REFERENCES Student (id_student) ON DELETE CASCADE, FOREIGN KEY (id_course) REFERENCES course (id_course) ON DELETE CASCADE) ;  
+
+
+DROP TABLE IF EXISTS Notes ; 
+CREATE TABLE Notes (id_student INT NOT NULL, id_course INT NOT NULL, mean_semester float(4,2), year_graduation YEAR, type_evaluation VARCHAR(50), mention VARCHAR(50), validity_year VARCHAR(50), rank_student VARCHAR(50), PRIMARY KEY (id_student, id_course), FOREIGN KEY (id_student) REFERENCES student (id_student) ON DELETE CASCADE , FOREIGN KEY (id_course) REFERENCES course (id_course) ON DELETE CASCADE);  
+
+DROP TABLE IF EXISTS Departments ; 
+CREATE TABLE Departments (id_department INT AUTO_INCREMENT NOT NULL, dep_name VARCHAR(50), dep_manager VARCHAR(50), localisation_dep VARCHAR(50), phone_num_dep VARCHAR(50), email_dep VARCHAR(50), budget_dep VARCHAR(50), description_dep VARCHAR(50), number_employees INT, number_student_per_dep INT, id_faculty INT, PRIMARY KEY (id_department)) ;  
+
+DROP TABLE IF EXISTS Student_services ; 
+CREATE TABLE Student_services (id_service INT AUTO_INCREMENT NOT NULL, name_service VARCHAR(50), description_service VARCHAR(50), contact_detail VARCHAR(50), Business_hours VARCHAR(50), Responsible VARCHAR(50), Type_service VARCHAR(50), budget VARCHAR(50), PRIMARY KEY (id_service)) ;  
+
+
+DROP TABLE IF EXISTS Student_housing ; 
+CREATE TABLE Student_housing (id_accomodation INT AUTO_INCREMENT NOT NULL, type_accomodation VARCHAR(50), area VARCHAR(50), availability VARCHAR(50), location VARCHAR(50), price VARCHAR(50), service_included VARCHAR(50), time_accomodation VARCHAR(50), rental_start DATE, rental_end_date DATE, id_student INT, PRIMARY KEY (id_accomodation));  
+
+
+DROP TABLE IF EXISTS campus_jobs ;
+CREATE TABLE campus_jobs (id_job INT AUTO_INCREMENT NOT NULL, position_title VARCHAR(50), description VARCHAR(50), workplace VARCHAR(50), working_hours VARCHAR(50), salary VARCHAR(50), supervisor VARCHAR(50), start_date DATE, end_date DATE, employment_status VARCHAR(50), id_student INT, PRIMARY KEY (id_job)) ;  
+
+
+DROP TABLE IF EXISTS Scholarships ; 
+CREATE TABLE Scholarships (id_scholarship INT AUTO_INCREMENT NOT NULL, scholarship_name VARCHAR(50), description VARCHAR(50), eligibility_criteria VARCHAR(50), amount VARCHAR(50), duration VARCHAR(50), application_deadline VARCHAR(50), selection_process VARCHAR(50), previous_beneficiaries VARCHAR(50), status VARCHAR(50), id_student INT, PRIMARY KEY (id_scholarship)) ;  
+
+
+DROP TABLE IF EXISTS Sports_disciplines ; 
+CREATE TABLE Sports_disciplines (id_sport_disc INT AUTO_INCREMENT NOT NULL, name_discipline VARCHAR(50), description VARCHAR(50), equipement_available VARCHAR(50), hours_operation VARCHAR(50), registration_date DATE, additional_service VARCHAR(50), membership_rates VARCHAR(50), special_events VARCHAR(50), discipline_teacher VARCHAR(50), PRIMARY KEY (id_sport_disc)) ;  
+
+
+DROP TABLE IF EXISTS Calendar ;
+CREATE TABLE Calendar (id_calendar INT AUTO_INCREMENT NOT NULL, id_course INT NOT NULL, class_period VARCHAR(50), holiday_period VARCHAR(50), review_period VARCHAR(50), courses_times VARCHAR(50),  public_holidays VARCHAR(50), PRIMARY KEY (id_calendar), FOREIGN KEY (id_course) REFERENCES course (id_course) ON DELETE CASCADE) ; 
+
+DROP TABLE IF EXISTS Exam_assessment ;
+CREATE TABLE Exam_assessment (id_exam INT AUTO_INCREMENT NOT NULL, id_course INT NOT NULL, matter VARCHAR(50), type_exam VARCHAR(50), duration_assessment VARCHAR(50), examination_room VARCHAR(50), number_student INT, results VARCHAR(50), PRIMARY KEY (id_exam),FOREIGN KEY (id_course) REFERENCES Course (id_course) ON DELETE CASCADE) ;  
+
+DROP TABLE IF EXISTS Tutoring_mentoring ; 
+CREATE TABLE Tutoring_mentoring (id_mentoring INT AUTO_INCREMENT NOT NULL, type_program VARCHAR(50), mentor_field_study VARCHAR(50), availability_tutors VARCHAR(50), number_stud_tutors VARCHAR(50), id_student INT, tutoring_session VARCHAR(50), program_objective VARCHAR(50), contact_mentors VARCHAR(50), PRIMARY KEY (id_mentoring), FOREIGN KEY (id_student) REFERENCES student (id_student) ON DELETE CASCADE) ; 
+
+
+DROP TABLE IF EXISTS International_relationship ; 
+CREATE TABLE International_relationship (id_relation_inter INT AUTO_INCREMENT NOT NULL, exchange_program VARCHAR(50), international_partnership VARCHAR(50), id_student INT, partner_university VARCHAR(50), country VARCHAR(50), program_duration VARCHAR(50), main_contact VARCHAR(50), PRIMARY KEY (id_relation_inter),FOREIGN KEY (id_student) REFERENCES student (id_student) ON DELETE CASCADE) ;  
+
+
+DROP TABLE IF EXISTS Alumni_network ; 
+CREATE TABLE Alumni_network (id_alumni INT AUTO_INCREMENT NOT NULL, name_association VARCHAR(50), objective_association VARCHAR(50), proposed_service VARCHAR(50), alumni_stud VARCHAR(50), membership_codition VARCHAR(50), member_benefit VARCHAR(50), contacts VARCHAR(50), PRIMARY KEY (id_alumni)) ;  
+
+
+DROP TABLE IF EXISTS Professional_integration ;
+CREATE TABLE Professional_integration (id_insertion INT AUTO_INCREMENT NOT NULL, graduation_year VARCHAR(50), degree_obtained VARCHAR(50), latency_time_before_insertion VARCHAR(50), id_student INT, salary_obtaines VARCHAR(50), type_contract_obtaines VARCHAR(50), PRIMARY KEY (id_insertion),FOREIGN KEY (id_student) REFERENCES student (id_student) ON DELETE CASCADE) ;  
+
+
+DROP TABLE IF EXISTS Internship ; 
+CREATE TABLE Internship (id_internship INT AUTO_INCREMENT NOT NULL, id_student INT, duration_internship VARCHAR(25), enterprise_name VARCHAR(50), enterprise_location VARCHAR(50), PRIMARY KEY (id_internship),FOREIGN KEY (id_student) REFERENCES student (id_student) ON DELETE CASCADE) ;  
+
+
+DROP TABLE IF EXISTS Campus ; 
+CREATE TABLE Campus (id_campus INT AUTO_INCREMENT NOT NULL, id_department INT, camp_location VARCHAR(50), camp_components VARCHAR(50), PRIMARY KEY (id_campus),FOREIGN KEY (id_department) REFERENCES departments (id_department) ON DELETE CASCADE);  
+
+
+DROP TABLE IF EXISTS Borrowed_books_lib ;
+CREATE TABLE Borrowed_books_lib (ISBN INT AUTO_INCREMENT NOT NULL, author VARCHAR(50), publication_date DATE, category VARCHAR(50), borrowing_date DATE, return_date DATE, title_book_borrow VARCHAR(50), PRIMARY KEY (ISBN)) ;  
+
+
+DROP TABLE IF EXISTS Student_transport ;
+CREATE TABLE Student_transport (id_transport INT AUTO_INCREMENT NOT NULL, id_student INT, type_transport VARCHAR(50), travel_duration VARCHAR(50), distance_traveled VARCHAR(50), cost_transport VARCHAR(25), subscription_cards VARCHAR(50), transport_preferred VARCHAR(25), PRIMARY KEY (id_transport),FOREIGN KEY (id_student) REFERENCES student (id_student) ON DELETE CASCADE) ; 
+
+DROP TABLE IF EXISTS Research_project ; 
+CREATE TABLE Research_project (id_project INT AUTO_INCREMENT NOT NULL, field_project VARCHAR(50), id_student INT, name_supervisor VARCHAR(50), writing_start_date DATE, cost_project VARCHAR(25), status_project VARCHAR(50), PRIMARY KEY (id_project),FOREIGN KEY (id_student) REFERENCES student (id_student) ON DELETE CASCADE) ;
+
+DROP TABLE IF EXISTS Emergency_contacts ; 
+CREATE TABLE Emergency_contacts (id_emergency INT AUTO_INCREMENT NOT NULL, id_student INT, name_cont_emer VARCHAR(50), first_name_emer VARCHAR(50), number_cont_emer INT, location_cont_emer VARCHAR(50), status_cont_emer VARCHAR(50), PRIMARY KEY (id_emergency),FOREIGN KEY (id_student) REFERENCES student (id_student) ON DELETE CASCADE) ;  
+
+DROP TABLE IF EXISTS student_parents ; 
+CREATE TABLE student_parents (id_parents INT AUTO_INCREMENT NOT NULL, id_student INT, father_name VARCHAR(50), mother_name VARCHAR(50), parent_marital_status VARCHAR(50), father_occupation VARCHAR(50), mother_occupation VARCHAR(50), PRIMARY KEY (id_parents),FOREIGN KEY (id_student) REFERENCES student (id_student) ON DELETE CASCADE) ;  
+
+DROP TABLE IF EXISTS student_absences ; 
+CREATE TABLE student_absences (id_absence INT AUTO_INCREMENT NOT NULL, id_student INT, date_absence DATE, class_missed VARCHAR(25), id_prof INT, absence_reason VARCHAR(50), absence_duration TIME, absence_status VARCHAR(25), absence_sanction VARCHAR(50), PRIMARY KEY (id_absence), FOREIGN KEY (id_student) REFERENCES student (id_student) ON DELETE CASCADE, FOREIGN KEY (id_prof) REFERENCES professor (id_prof) ON DELETE CASCADE) ;  
+
+DROP TABLE IF EXISTS univ_faculty ; 
+CREATE TABLE univ_faculty (id_faculty INT AUTO_INCREMENT NOT NULL, id_student INT NOT NULL, id_department INT, faculty_name VARCHAR(50), responsible_faculty VARCHAR(50), faculty_location VARCHAR(50), employees_number INT, student_number INT, faculty_code VARCHAR(25), department_number INT, faculty_status VARCHAR(50), PRIMARY KEY (id_faculty, id_student),FOREIGN KEY (id_student) REFERENCES student (id_student) ON DELETE CASCADE,FOREIGN KEY (id_department) REFERENCES departments (id_department) ON DELETE CASCADE) ;  
+
+DROP TABLE IF EXISTS Teaching ;
+CREATE TABLE Teaching (id_prof INT NOT NULL, id_student INT NOT NULL, language_course VARCHAR(25), PRIMARY KEY (id_prof, id_student),
+FOREIGN KEY (id_student) REFERENCES student (id_student) ON DELETE CASCADE, FOREIGN KEY (id_prof) REFERENCES Professor (id_prof) ON DELETE CASCADE) ; 
+
+DROP TABLE IF EXISTS Studying ; 
+CREATE TABLE Studying (id_student INT NOT NULL, id_course INT NOT NULL, PRIMARY KEY (id_student, id_course)) ;  
+
+DROP TABLE IF EXISTS Noted ;
+CREATE TABLE noted (id_course INT NOT NULL, id_student INT NOT NULL, PRIMARY KEY (id_course,  id_student)) ;  
+
+DROP TABLE IF EXISTS giving ;
+CREATE TABLE giving (id_prof INT NOT NULL, id_course INT NOT NULL, number_of_course_given INT, PRIMARY KEY (id_prof,  id_course)) ;  
+
+DROP TABLE IF EXISTS Benefit ; 
+CREATE TABLE Benefit (id_student INT NOT NULL, id_service INT NOT NULL, service_price FLOAT, PRIMARY KEY (id_student,  id_service)) ;  
+
+DROP TABLE IF EXISTS Attribuate ;
+CREATE TABLE Attribuate (id_exam INT NOT NULL, id_course INT NOT NULL, id_student INT NOT NULL, PRIMARY KEY (id_exam, id_course,  id_student)) ;  
+
+DROP TABLE IF EXISTS Program ; 
+CREATE TABLE Program (id_department INT NOT NULL, id_calendar INT NOT NULL, PRIMARY KEY (id_department,  id_calendar)) ;  
+
+DROP TABLE IF EXISTS Practice ;
+CREATE TABLE Practice (id_student INT NOT NULL, id_sport_disc INT NOT NULL, PRIMARY KEY (id_student,  id_sport_disc)) ;  
+
+DROP TABLE IF EXISTS can_be_mentored ;
+CREATE TABLE can_be_mentored (id_student INT NOT NULL, id_mentoring INT NOT NULL, mentor_name VARCHAR(50), start_date_mentoring DATE, end_date_mentoring DATE, PRIMARY KEY (id_student,  id_mentoring)) ;  
+
+DROP TABLE IF EXISTS is_made_possible ;
+CREATE TABLE is_made_possible (id_insertion INT AUTO_INCREMENT NOT NULL, id_alumni INT NOT NULL, PRIMARY KEY (id_insertion,  id_alumni)) ;  
+
+DROP TABLE IF EXISTS borrow ; 
+CREATE TABLE borrow (id_student INT NOT NULL, ISBN INT NOT NULL, number_book_borrowed INT, PRIMARY KEY (id_student,  ISBN)) ;  
+
+DROP TABLE IF EXISTS included ;
+CREATE TABLE included (id_faculty INT NOT NULL, id_campus INT NOT NULL, PRIMARY KEY (id_faculty,  id_campus)) ;  
+
+DROP TABLE IF EXISTS live ;
+CREATE TABLE live (id_student INT NOT NULL, id_parents INT NOT NULL, number_stu_per_parent INT, PRIMARY KEY (id_student,  id_parents)) ;  
+
+DROP TABLE IF EXISTS travel ; 
+CREATE TABLE travel (id_student INT NOT NULL, id_transport INT NOT NULL, PRIMARY KEY (id_student,  id_transport)) ;  
+
+DROP TABLE IF EXISTS be_absent ; 
+CREATE TABLE be_absent (id_student INT NOT NULL, id_absence INT NOT NULL, absence_number INT, PRIMARY KEY (id_student,  id_absence)) ;  
+
+DROP TABLE IF EXISTS realise ; 
+CREATE TABLE realise (id_project INT NOT NULL, id_student INT NOT NULL, number_proj_per_stu INT, PRIMARY KEY (id_project,  id_student)) ;  
+
+DROP TABLE IF EXISTS provide ; 
+CREATE TABLE provide (id_student INT NOT NULL, id_emergency INT NOT NULL, PRIMARY KEY (id_student,  id_emergency)); 
+
+ALTER TABLE Student ADD CONSTRAINT FK_Department FOREIGN KEY (id_department) REFERENCES Departments (id_department);
+ALTER TABLE Student ADD CONSTRAINT FK_Student_student_housing FOREIGN KEY (id_accomodation) REFERENCES Student_housing (id_accomodation);
+ALTER TABLE Student ADD CONSTRAINT FK_Student_scholarships FOREIGN KEY (id_scholarship) REFERENCES Scholarships (id_scholarship);
+ALTER TABLE Student ADD CONSTRAINT FK_Student_internship FOREIGN KEY (id_internship) REFERENCES Internship (id_internship);
+ALTER TABLE Student ADD CONSTRAINT FK_Student_campus_jobs FOREIGN KEY (id_job) REFERENCES campus_jobs (id_job);
+ALTER TABLE Student ADD CONSTRAINT FK_Student_international_relationship FOREIGN KEY (id_relation_inter) REFERENCES International_relationship (id_relation_inter);
+ALTER TABLE Student ADD CONSTRAINT FK_Student_professional_integration FOREIGN KEY (id_insertion) REFERENCES Professional_integration (id_insertion);
+
+ALTER TABLE Registrations ADD CONSTRAINT FK_Registrations_departments FOREIGN KEY (id_department) REFERENCES Departments (id_department); 
+
+ALTER TABLE Student_housing ADD CONSTRAINT FK_Student_housing_student FOREIGN KEY (id_student) REFERENCES Student (id_student); 
+
+ALTER TABLE campus_jobs ADD CONSTRAINT FK_campus_jobs_student FOREIGN KEY (id_student) REFERENCES Student (id_student); 
+
+ALTER TABLE Scholarships ADD CONSTRAINT FK_Scholarships_student FOREIGN KEY (id_student) REFERENCES Student (id_student); 
+
+ALTER TABLE Studying ADD CONSTRAINT FK_Studying_Student FOREIGN KEY (id_student) REFERENCES Student (id_student); 
+
+ALTER TABLE Studying ADD CONSTRAINT FK_Studying_Course FOREIGN KEY (id_course) REFERENCES Course (id_course); 
+
+ALTER TABLE Noted ADD CONSTRAINT FK_Noted_Notes FOREIGN KEY (id_course,  id_student) REFERENCES Notes (id_course,  id_student); 
+
+ALTER TABLE Noted ADD CONSTRAINT FK_Noted_Student FOREIGN KEY (id_student) REFERENCES Student (id_student); 
+
+ALTER TABLE Giving ADD CONSTRAINT FK_Giving_Professor FOREIGN KEY (id_prof) REFERENCES Professor (id_prof); 
+
+ALTER TABLE Giving ADD CONSTRAINT FK_Giving_Course FOREIGN KEY (id_course) REFERENCES Course (id_course); 
+
+ALTER TABLE Benefit ADD CONSTRAINT FK_Benefit_Student FOREIGN KEY (id_student) REFERENCES Student (id_student); 
+
+ALTER TABLE Benefit ADD CONSTRAINT FK_Benefit_Student_services FOREIGN KEY (id_service) REFERENCES Student_services (id_service); 
+
+ALTER TABLE Attribuate ADD CONSTRAINT FK_Attribuate_Exam_assessment FOREIGN KEY (id_exam) REFERENCES Exam_assessment (id_exam); 
+
+ALTER TABLE Attribuate ADD CONSTRAINT FK_Attribuate_Notes FOREIGN KEY (id_course,  id_student) REFERENCES Notes (id_course,  id_student); 
+
+ALTER TABLE Program ADD CONSTRAINT FK_Program_Department FOREIGN KEY (id_department) REFERENCES Departments (id_department); 
+
+ALTER TABLE Program ADD CONSTRAINT FK_Program_University_calendar FOREIGN KEY (id_calendar) REFERENCES Calendar (id_calendar); 
+
+ALTER TABLE Practice ADD CONSTRAINT FK_Practice_Student FOREIGN KEY (id_student) REFERENCES Student (id_student); 
+
+ALTER TABLE Practice ADD CONSTRAINT FK_Practice_Sports_disciplines FOREIGN KEY (id_sport_disc) REFERENCES Sports_disciplines (id_sport_disc); 
+
+ALTER TABLE Can_be_mentored ADD CONSTRAINT FK_Can_be_mentored_Student FOREIGN KEY (id_student) REFERENCES Student (id_student); 
+
+ALTER TABLE can_be_mentored ADD CONSTRAINT FK_can_be_mentored_Tutoring_mentoring FOREIGN KEY (id_mentoring) REFERENCES Tutoring_mentoring (id_mentoring); 
+
+ALTER TABLE is_made_possible ADD CONSTRAINT FK_is_made_possible_Occupational_integration FOREIGN KEY (id_insertion) REFERENCES Professional_integration (id_insertion); 
+
+ALTER TABLE is_made_possible ADD CONSTRAINT FK_is_made_possible_Alumni_service FOREIGN KEY (id_alumni) REFERENCES Alumni_network (id_alumni); 
+
+ALTER TABLE borrow ADD CONSTRAINT FK_borrow_Student FOREIGN KEY (id_student) REFERENCES Student (id_student); 
+
+ALTER TABLE borrow ADD CONSTRAINT FK_borrow_Library FOREIGN KEY (ISBN) REFERENCES Borrowed_books_lib (ISBN); 
+
+ALTER TABLE included ADD CONSTRAINT FK_included_student_faculty FOREIGN KEY (id_faculty) REFERENCES univ_faculty (id_faculty); 
+
+ALTER TABLE included ADD CONSTRAINT FK_included_Campus FOREIGN KEY (id_campus) REFERENCES Campus (id_campus); 
+
+ALTER TABLE live ADD CONSTRAINT FK_live_Student FOREIGN KEY (id_student) REFERENCES Student (id_student); 
+
+ALTER TABLE live ADD CONSTRAINT FK_live_student_parents FOREIGN KEY (id_parents) REFERENCES student_parents (id_parents); 
+
+ALTER TABLE travel ADD CONSTRAINT FK_travel_Student FOREIGN KEY (id_student) REFERENCES Student (id_student); 
+
+ALTER TABLE travel ADD CONSTRAINT FK_travel_Student_transport FOREIGN KEY (id_transport) REFERENCES Student_transport (id_transport); 
+
+ALTER TABLE be_absent ADD CONSTRAINT FK_be_absent_Student FOREIGN KEY (id_student) REFERENCES Student (id_student); 
+
+ALTER TABLE be_absent ADD CONSTRAINT FK_be_absent_student_absences FOREIGN KEY (id_absence) REFERENCES student_absences (id_absence); 
+
+ALTER TABLE realise ADD CONSTRAINT FK_realise_Research_project FOREIGN KEY (id_project) REFERENCES Research_project (id_project); 
+
+ALTER TABLE realise ADD CONSTRAINT FK_realise_Student FOREIGN KEY (id_student) REFERENCES Student (id_student); 
+
+ALTER TABLE provide ADD CONSTRAINT FK_provide_Student FOREIGN KEY (id_student) REFERENCES Student (id_student); 
+
+ALTER TABLE provide ADD CONSTRAINT FK_provide_Emergency_contacts FOREIGN KEY (id_emergency) REFERENCES Emergency_contacts (id_emergency); 
+
+
+-- _______________________Insert the entries in the database_______________________
+
+INSERT INTO `departments` ( `dep_name`, `dep_manager`, `localisation_dep`, `phone_num_dep`, `email_dep`, `budget_dep`, `description_dep`, `number_employees`, `number_student_per_dep`, `id_faculty`) 
+VALUES 
+('Computer Science', 'Dr. Adrian CHIFU', 'Building C', '+33 4 91 10 20 30', 'info@univ.fr', '100000', 'The Computer Science department offers training.', '15', '100', '1'), 
+('Mathematics', 'Prof. Laurent BRUASSE', 'Building A', '+33 4 91 10 20 31', 'math@univ.fr', '80000', 'The Mathematics department offers training.', '20', '50', '1'), 
+('Physics', 'Dr. Petit', 'Building B', '+33 4 91 10 20 32', 'physique@univ.fr', '120000', 'The Physics department offers training.', '30', '70', '1'), 
+('Modern Literature', 'Prof. Lefebvre', 'Building E', '+33 4 91 10 20 34', 'lettres@univ.fr', '90000', 'The Modern Literature department offers training.', '25', '80', '2'), 
+('Language Sciences', 'Dr. Bernard', 'Building E', '+33 4 91 10 20 35', 'langues@univ.fr', '85000', 'The Language Sciences department offers training.', '20', '60', '2'), 
+('Economics', 'Prof. Bruno Decreuse', 'Building F', '+33 4 91 10 20 36', 'economie@univ.fr', '110000', 'The Economics department offers training.', '35', '120', '3'), 
+('Political Sciences', 'Prof. Martin', 'Building G', '+33 4 91 10 20 39', 'sciencespo@univ.fr', '95000', 'The Political Sciences department offers training.', '30', '90', '3'), 
+('Information and Communication Sciences', 'Prof. Petit', 'Building H', '+33 4 91 10 20 40', 'sic@univ.fr', '105000', 'The Information and Communication Sciences department offers training.', '28', '85', '3'), 
+('Psychology', 'Dr. Durand', 'Building I', '+33 4 91 10 20 41', 'psychologie@univ.fr', '90000', 'The Psychology department offers training.', '32', '20', '2'), 
+('Geography', 'Prof. Bernard', 'Building J', '+33 4 91 10 20 42', 'geographie@univ.fr', '85000', 'The Geography department offers training.', '25', '70', '3');
+
+
+INSERT INTO campus (id_campus, id_department, camp_location, camp_components) 
+VALUES
+(901, 1, 'Colbert', 'Component A'),
+(902, 2, 'Luminy', 'Component B'),
+(903, 3, 'Charles', 'Component C'),
+(904, 5, 'Chartreux', 'Component D'),
+(905, 4, 'Malpassé', 'Component E'),
+(906, 7, 'Jérome', 'Component F'),
+(907, 6, 'Provence', 'Component G'),
+(908, 9, 'Guesde', 'Component H'),
+(909, 8, 'Marignane', 'Component I'),
+(910, 10, 'Mirabeau', 'Component J');
+
+
+INSERT INTO `professor`(`id_prof`, `prof_name`, `first_name_prof`, `e_mail_prof`, `phone_num_prof`, `expertise_field`, `availability_prof`, `office_adress`, `department_prof`, `status_prof`) 
+
+VALUES (301, 'Dr.', 'Marie Durand', 'marie.durand@university.fr', '+33 4 91 13 45 67', 'Computer Science', 'Yes', 'Bâtiment C, Bureau 212', 'Informatique', 'Full-time'),
+        (302, 'Mr.', 'Jean Falcon', 'jean.falcon@university.fr', '+33 4 91 78 90 12', 'History', 'Limited (Tuesday & Thursday)', 'Bâtiment A, Bureau 101', 'Histoire', 'Part-time'),
+        (303, 'Pr.', 'Anna Schmidt', 'anna.schmidt@guest.university.fr', '+49 1512 3456 789', 'Economics', 'Spring Semester 2024', 'Bâtiment B, Bureau 305', 'Economie', 'Guest (Spring Semester)'),
+        (304, 'Dr.','Pierre Martin', 'pierre.martin@university.fr','+33 73198880', 'Mathematics', 'On Sabbatical Leave (2023-2024)', 'Bâtiment C', 'Mathématiques', 'Sabbatical Leave'),
+        (305, 'Dr.', 'Adrian Chifu', 'adrian.chifu@university.fr', '+33 4 91 34 56 78', 'Political Science', 'Varies by appointment', 'Bâtiment D, Bureau 408', 'Sciences Politiques', 'Full-time'), 
+        (306, 'Mr.', 'David Rossi', 'david.rossi@university.fr', '+33 4 91 89 01 23', 'English Literature', 'Online consultations available', 'Bâtiment E, Bureau 205', 'Anglais', 'Part-time'),
+        (307, 'Pr.', 'Catherine Noir', 'catherine.noir@retired.fr', '+33 4 91 45 67 89', 'Philosophy', 'Volunteers on Wednesdays', 'Bâtiment A, Bureau 102 (Retired)', 'Philosophie', 'Volunteer'),
+        (308, 'Mr.', 'Paul Dubois', 'paul.dubois@university.fr', '+33 4 91 56 78 90', 'Physical Education', 'Classes often held outdoors', 'Bâtiment F, Gymnase', 'Education Physique et Sportive', 'Full-time'),
+        (309, 'Dr.', 'Aurélie Durand', 'aurelie.durand@university.fr', '+33 4 91 67 89 01', 'Chemistry', 'Research hours: Mon-Fri 2pm-5pm', 'Bâtiment C, Laboratoire 314', 'Chimie', 'Full-time'),
+        (310, 'Pr.', 'Captain America', 'captain.amaerica@university.fr', '+33 4 91 78 90 12', 'Mathematics', 'Limited (Wednesdays only)', 'Bâtiment D, Bureau 506', 'Mathématiques', 'Full-time (Head of Department)');
+
+
+INSERT INTO `student_services`(`id_service`, `name_service`, `description_service`, `contact_detail`, `Business_hours`, `Responsible`, `Type_service`, `budget`)
+VALUES  (21, 'Student Life Assistance Service (SLAS)', 'Provides social, financial, and administrative assistance to students', '04.91.13.45.67, save@university.com', 'Monday-Friday: 9am-5pm', 'Mrs. Dupont', 'Social assistance', '50000€'),
+(22, 'Student Career Guidance Service (SCGS)', 'Helps students define their career goals and find internships or jobs', '04.91.13.48.90, sop@university.com', 'Monday-Thursday: 9am-12:30pm and 1:30pm-5pm, Friday: 9am-12:30pm', 'Mr. Dubois', 'Career guidance', '30000€'),
+(23, 'University Health Service (UHS)', 'Offers medical, psychological, and dental consultations to students', '04.91.13.46.78, Online appointments', 'Monday-Friday: 8am-6pm', 'Dr. Durand', 'Health', '80000€'),
+(24, 'University Sports Service (USS)', 'Provides sports and recreational activities to students', 'https://www.univ-amu.fr/en/public/sports', 'Varies depending on activities', 'Mr. Rossi', 'Sports and wellness', '25000€'),
+(25, 'University Cultural Service (UCS)', 'Offers cultural events and workshops to students', '04.91.13.49.01, scu@university.com', 'Monday-Friday: 9am-12:30pm and 1:30pm-4pm', 'Mrs. Martinez', 'Culture', '40000€'),
+(26, 'Student Union (SU)', 'Represents students to the administration and organizes events', '04.91.13.49.23, bde@university.com, Website: https://www.bde-univamu.fr', 'Varies depending on events', 'SU Team', 'Student life', '10000€'),
+(27, 'Student Housing Service (SHS)', 'Assists students in finding accommodation tailored to their needs and budget', '04.91.13.47.54, sle@university.com', 'Monday-Friday: 9am-1pm and 2pm-5pm', 'Mrs. Robert', 'Housing', '60000€'),
+(28, 'Job Search Assistance Service (JSAS)', 'Helps students write their CV, prepare for job interviews, and find job opportunities', '04.91.13.45.87, sare@university.com, Website: https://www.univ-amu.fr/en/public/sare', 'Monday-Wednesday: 9am-12:30pm and 1:30pm-5pm, Thursday-Friday: 9am-12:30pm', 'Mr. Petit', 'Professional insertion', '45000€'),
+(29, 'Psychological Support Service (PSS)', 'Offers individual psychological consultations and group workshops to students', '04.91.13.49.12, Confidential online appointments', 'Monday-Friday: 8am-7pm', 'Mrs. Blanc', 'Psychological well-being', '55000€'),
+(30, 'Entrepreneurship Support Service (ESS)', 'Provides advice, training, and support to students who want to start their own business', ' 04.91.13.48.65, sace@university.com', 'Tuesday-Thursday: 10am-1pm and 2pm-5pm, Friday: 10am-1pm', 'Mr. Martin', 'Entrepreneurship', '20000€');
+
+
+INSERT INTO borrowed_books_lib (ISBN, author, publication_date, category, borrowing_date, return_date, title_book_borrow)
+VALUES
+('1001', 'Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein', '2001-07-31', 'Computer Science', '2024-04-01', '2024-05-01', 'Introduction to Algorithms'),
+('1002', 'Andrew S. Tanenbaum', '2001-07-19', 'Computer Science', '2024-04-05', '2024-05-05', 'Computer Networks'),
+('1003', 'Stuart Russell, Peter Norvig', '2009-04-22', 'Computer Science', '2024-04-10', '2024-05-10', 'Artificial Intelligence: A Modern Approach'),
+('1004', 'Michael Sipser', '2006-08-14', 'Computer Science', '2024-04-15', '2024-05-15', 'Introduction to the Theory of Computation'),
+('1005', 'Donald E. Knuth', '1997-07-01', 'Computer Science', '2024-04-20', '2024-05-20', 'The Art of Computer Programming'),
+('1006', 'Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein', '2009-07-31', 'Computer Science', '2024-04-25', '2024-05-25', 'Introduction to Algorithms: The MIT Press'),
+('1007', 'Michael Sipser', '2006-08-14', 'Computer Science', '2024-05-01', '2024-06-01', 'Introduction to the Theory of Computation'),
+('1008', 'Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein', '2001-07-31', 'Computer Science', '2024-05-05', '2024-06-05', 'Introduction to Algorithms'),
+('1009', 'Kenneth H. Rosen', '2011-03-21', 'Mathematics', '2024-05-10', '2024-06-10', 'Discrete Mathematics and Its Applications'),
+('1010', 'Jon Kleinberg, Éva Tardos', '2005-04-01', 'Computer Science', '2024-05-15', '2024-06-15', 'Algorithm Design'),
+('1011', 'Ian Goodfellow, Yoshua Bengio, Aaron Courville', '2016-11-10', 'Computer Science', '2024-05-20', '2024-06-20', 'Deep Learning'),
+('1012', 'Robert Sedgewick, Kevin Wayne', '2011-03-05', 'Computer Science', '2024-05-25', '2024-06-25', 'Algorithms'),
+('1013', 'David J. Griffiths, David I. Derting', '2015-01-26', 'Physics', '2024-06-01', '2024-07-01', 'Introduction to Quantum Mechanics'),
+('1014', 'Michael Sipser', '2006-08-14', 'Computer Science', '2024-06-05', '2024-07-05', 'Introduction to the Theory of Computation'),
+('1015', 'Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein', '2009-07-31', 'Computer Science', '2024-06-10', '2024-07-10', 'Introduction to Algorithms: The MIT Press');
+
+
+INSERT INTO alumni_network (id_alumni, name_association, objective_association, proposed_service, alumni_stud, membership_codition, member_benefit, contacts)
+VALUES
+(701, 'Alumni Connect', 'Fostering connections among alumni.', 'Networking events, job postings, mentorship programs.', 'Computer Science', 'Annual membership fee', 'Access to alumni directory, career resources.', 'contact@alumniconnect.com'),
+(702, 'Graduate Professionals Network', 'Supporting professional development.', 'Workshops, seminars, career counseling.', 'Business Administration', 'Lifetime membership', 'Exclusive job opportunities, professional networking.', 'info@graduatepros.com'),
+(703, 'MedAlumni', 'Promoting collaboration in healthcare.', 'Medical conferences, research grants.', 'Medicine', 'Annual subscription', 'Continuing education opportunities, medical forums.', 'medalumni@gmail.com'),
+(704, 'Engineering Alliance', 'Advancing engineering innovation.', 'Tech meetups, project collaborations.', 'Engineering', 'Biannual membership fee', 'Access to engineering resources, industry partnerships.', 'engineeringalliance@engineers.org'),
+(705, 'Legal Network', 'Supporting legal professionals.', 'Legal seminars, pro bono opportunities.', 'Law', 'Annual membership fee', 'Legal career advice, networking events.', 'info@legalnetwork.org'),
+(706, 'Artists'' Guild', 'Fostering creativity and collaboration.', 'Art exhibitions, workshops, networking events.', 'Fine Arts', 'Annual membership fee', 'Exhibition opportunities, art critiques.', 'artistsguild@gmail.com'),
+(707, 'Finance Professionals Society', 'Advancing knowledge in finance.', 'Financial seminars, networking mixers.', 'Finance', 'Annual membership fee', 'Access to financial publications, job postings.', 'info@financepros.org'),
+(708, 'Education Advocates', 'Supporting education initiatives.', 'Teacher workshops, community outreach programs.', 'Education', 'Annual subscription', 'Professional development opportunities, educational resources.', 'edadvocates@gmail.com'),
+(709, 'Green Initiative Network', 'Promoting environmental sustainability.', 'Environmental clean-up events, sustainability workshops.', 'Environmental Studies', 'Biannual membership fee', 'Access to environmental research, volunteer opportunities.', 'greeninitiative@gmail.com'),
+(710, 'Health and Wellness Club', 'Promoting healthy lifestyles.', 'Fitness classes, wellness seminars.', 'Health Sciences', 'Annual membership fee', 'Discounts on health products, access to fitness facilities.', 'healthwellnessclub@gmail.com'),
+(711, 'Journalism Society', 'Supporting journalism excellence.', 'Journalism workshops, guest speaker events.', 'Journalism', 'Annual membership fee', 'Internship opportunities, journalism resources.', 'journalismsociety@gmail.com'),
+(712, 'Marketing Association', 'Advancing marketing knowledge.', 'Marketing conferences, networking events.', 'Marketing', 'Annual membership fee', 'Access to marketing publications, job postings.', 'info@marketingassoc.org'),
+(713, 'Musician''s Guild', 'Supporting musical talent.', 'Music performances, masterclasses.', 'Music', 'Annual membership fee', 'Performance opportunities, music workshops.', 'musiciansguild@gmail.com'),
+(714, 'Public Health Network', 'Advocating for public health.', 'Public health campaigns, policy discussions.', 'Public Health', 'Annual subscription', 'Access to public health research, advocacy resources.', 'publichealthnet@gmail.com'),
+(715, 'Technology Innovators Club', 'Fostering technology innovation.', 'Tech hackathons, innovation workshops.', 'Information Technology', 'Annual membership fee', 'Access to tech resources, networking opportunities.', 'techinnovators@gmail.com');
+
+
+INSERT INTO sports_disciplines (id_sport_disc, name_discipline, description, equipement_available, hours_operation, registration_date, additional_service, membership_rates, special_events, discipline_teacher)
+VALUES
+(801, 'Swimming', 'Learn and practice swimming techniques in a controlled environment.', 'Swimming pool, goggles, swim caps', 'Monday to Friday: 8:00 AM to 9:00 PM; Saturday and Sunday: 9:00 AM to 6:00 PM', '2024-04-01', 'Swimming lessons, lifeguard supervision', 'Monthly: $30; Quarterly: $80; Annual: $250', 'Swimming competitions, water aerobics classes', 'Maria Rodriguez'),
+(802, 'Basketball', 'Improve basketball skills and participate in friendly matches.', 'Basketball court, basketballs, hoops', 'Monday to Friday: 4:00 PM to 10:00 PM; Saturday: 10:00 AM to 8:00 PM', '2024-04-05', 'Basketball coaching sessions, team training', 'Monthly: $20; Quarterly: $50; Annual: $180', 'Basketball tournaments, slam dunk contests', 'Michael Johnson'),
+(803, 'Yoga', 'Relax and rejuvenate with yoga sessions for all levels.', 'Yoga mats, blocks, straps', 'Monday to Friday: 6:00 AM to 8:00 PM; Saturday and Sunday: 9:00 AM to 5:00 PM', '2024-04-10', 'Guided meditation, mindfulness workshops', 'Monthly: $25; Quarterly: $60; Annual: $200', 'Yoga retreats, outdoor yoga sessions', 'Emily Smith'),
+(804, 'Tennis', 'Master your tennis skills and enjoy playing singles or doubles matches.', 'Tennis courts, tennis rackets, tennis balls', 'Monday to Friday: 9:00 AM to 9:00 PM; Saturday and Sunday: 8:00 AM to 6:00 PM', '2024-04-15', 'Tennis coaching, match arranging', 'Monthly: $35; Quarterly: $90; Annual: $300', 'Tennis tournaments, social mixers', 'David Brown'),
+(805, 'Running', 'Stay fit and active with group running sessions.', 'Running track, running shoes', 'Daily: 6:00 AM to 9:00 AM and 5:00 PM to 8:00 PM', '2024-04-20', 'Running clinics, pace groups', 'Monthly: $15; Quarterly: $40; Annual: $150', 'Marathons, charity runs', 'Jessica Lee'),
+(806, 'Gymnastics', 'Develop flexibility, strength, and coordination through gymnastics exercises.', 'Gymnastics mats, balance beams, parallel bars', 'Monday to Friday: 3:00 PM to 9:00 PM; Saturday: 10:00 AM to 4:00 PM', '2024-04-25', 'Gymnastics coaching, skill progression', 'Monthly: $30; Quarterly: $80; Annual: $250', 'Gymnastics showcases, competitions', 'Daniel Martinez'),
+(807, 'Soccer', 'Enjoy playing soccer matches and improve your skills.', 'Soccer field, soccer balls, goalposts', 'Monday to Friday: 4:00 PM to 10:00 PM; Saturday and Sunday: 9:00 AM to 8:00 PM', '2024-05-01', 'Soccer coaching, team training', 'Monthly: $25; Quarterly: $65; Annual: $220', 'Soccer leagues, friendly tournaments', 'Sophia Johnson'),
+(808, 'Cycling', 'Explore scenic routes and improve cycling endurance.', 'Bicycles, helmets, cycling gloves', 'Daily: 7:00 AM to 6:00 PM', '2024-05-05', 'Group cycling tours, cycling workshops', 'Monthly: $20; Quarterly: $50; Annual: $180', 'Cycling races, charity rides', 'Andrew White'),
+(809, 'Dance', 'Learn various dance styles and express yourself through movement.', 'Dance studio, mirrors, sound system', 'Monday to Friday: 5:00 PM to 10:00 PM; Saturday: 10:00 AM to 5:00 PM', '2024-05-10', 'Dance classes, choreography sessions', 'Monthly: $25; Quarterly: $60; Annual: $200', 'Dance showcases, themed parties', 'Olivia Taylor'),
+(810, 'Martial Arts', 'Learn self-defense techniques and discipline through martial arts training.', 'Training mats, punching bags, uniforms', 'Monday to Friday: 6:00 PM to 9:00 PM; Saturday: 9:00 AM to 1:00 PM', '2024-05-15', 'Martial arts classes, belt testing', 'Monthly: $30; Quarterly: $75; Annual: $260', 'Martial arts tournaments, belt ceremonies', 'Jason Kim');
+
+
+INSERT INTO course (id_course, course_title, disciplinary_area, credits_ECTS, start_time_course, end_time_course, number_hours, day_of_course, method_delivery_course, type_course) 
+VALUES 
+(201, 'Big Data1', 'COMPUTER SCIENCE', 6, '08:30:00', '11:30:00', 3, 'Monday', 'Face-to-face', 'Theoretical and practical'), 
+(202, 'Algebra', 'MATHEMATICS', 4, '12:30:00', '15:30:00', 3, 'Monday', 'Face-to-face', 'Theoretical'), 
+(203, 'Mechanics', 'PHYSICS', 5, '09:00:00', '12:30:00', 3.5, 'Wednesday', 'Face-to-face', 'Theoretical and practical'), 
+(204, 'Financial market', 'FINANCE', 4, '14:00:00', '17:00:00', 3, 'Tuesday', 'Online', 'Theoretical'), 
+(205, 'English', 'LANGUAGE SCIENCES', 4, '08:30:00', '12:00:00', 3.5, 'Tuesday', 'Online', 'Theoretical'), 
+(206, 'Economic Growth', 'ECONOMICS', 5, '08:00:00', '11:00:00', 3, 'Thursday', 'Face-to-face', 'Theoretical'), 
+(207, 'Economic Situation', 'POLITICAL SCIENCE', 3, '16:00:00', '19:00:00', 3, 'Friday', 'Face-to-face', 'Theoretical'),
+(208, 'Economic Policies', 'POLITICAL SCIENCE', 4, '13:30:00', '16:30:00', 3, 'Wednesday' , 'Online', 'Theoretical'), 
+(209, 'Microeconomics', 'ECONOMICS', 3, '15:00:00', '18:00:00', 3, 'Wednesday', 'Face-to-face', 'Theoretical'), 
+(210, 'Optimization', 'MATHEMATICS', 6, '11:00:00', '13:00:00', 3, 'Friday', 'Face-to-face', 'Theoretical');
+
+
+INSERT INTO Exam_assessment (id_exam, id_course, matter, type_exam, duration_assessment, examination_room, number_student, results)
+VALUES
+    (31, 202, 'Algebra', 'Written exam', '2 hours', 'Room A101', 50, 'Passed'),
+    (32, 208, 'Economic Policies', 'Oral exam', '30 minutes', 'Room B205', 30, 'Failed'),
+    (33, 201, 'Big Data1', 'Practical exam', '1 hour', 'Laboratory C301', 20, 'Passed'),
+    (34, 204, 'Financial market', 'Written exam', '2 hours', 'Room D102', 40, 'Passed'),
+    (35, 205, 'English', 'Oral exam', '30 minutes', 'Room E201', 25, 'Failed'),
+    (36, 203, 'Mechanics', 'Practical exam', '1 hour', 'Laboratory F305', 15, 'Passed'),
+    (37, 207, 'Economic Situation', 'Written exam', '2 hours', 'Room G103', 35, 'Passed'),
+    (38, 206, 'Economic Growth', 'Oral exam', '30 minutes', 'Room H210', 28, 'Failed'),
+    (39, 210, 'Optimization', 'Written exam', '1 hour', 'Laboratory I401', 18, 'Passed'),
+    (40, 209, 'Microeconomics', 'Written exam', '3 hours', 'Room J302', 60, 'Passed');
+
+
+INSERT INTO calendar (id_calendar, id_course, class_period, holiday_period, review_period, courses_times, public_holidays)
+VALUES
+(601, 210, '2024-09-01 to 2024-12-15', '2024-10-25 to 2024-11-02', '2024-12-02 to 2024-12-15', 'Monday to Friday 8:00 AM to 4:00 PM', '2024-10-25, 2024-12-25'),
+(602, 202, '2024-09-01 to 2024-12-15', '2024-10-25 to 2024-11-02', '2024-12-02 to 2024-12-15', 'Monday to Friday 9:00 AM to 5:00 PM', '2024-11-01, 2024-12-25'),
+(603, 203, '2024-09-01 to 2024-12-15', '2024-10-25 to 2024-11-02', '2024-12-02 to 2024-12-15', 'Monday to Friday 10:00 AM to 6:00 PM', '2024-10-25, 2024-11-01'),
+(604, 207, '2024-09-01 to 2024-12-15', '2024-10-25 to 2024-11-02', '2024-12-02 to 2024-12-15', 'Monday to Friday 8:30 AM to 4:30 PM', '2024-10-31, 2024-12-25'),
+(605, 205, '2024-09-01 to 2024-12-15', '2024-10-25 to 2024-11-02', '2024-12-02 to 2024-12-15', 'Monday to Friday 9:30 AM to 5:30 PM', '2024-10-30, 2024-11-02'),
+(606, 206, '2024-09-01 to 2024-12-15', '2024-10-25 to 2024-11-02', '2024-12-02 to 2024-12-15', 'Monday to Friday 10:30 AM to 6:30 PM', '2024-10-28, 2024-11-01'),
+(607, 204, '2024-09-01 to 2024-12-15', '2024-10-25 to 2024-11-02', '2024-12-02 to 2024-12-15', 'Monday to Friday 8:00 AM to 4:00 PM', '2024-10-29, 2024-11-02'),
+(608, 208, '2024-09-01 to 2024-12-15', '2024-10-25 to 2024-11-02', '2024-12-02 to 2024-12-15', 'Monday to Friday 9:00 AM to 5:00 PM', '2024-10-27, 2024-11-01'),
+(609, 209, '2024-09-01 to 2024-12-15', '2024-10-25 to 2024-11-02', '2024-12-02 to 2024-12-15', 'Monday to Friday 10:00 AM to 6:00 PM', '2024-10-26, 2024-11-02'),
+(610, 201, '2024-09-01 to 2024-12-15', '2024-10-25 to 2024-11-02', '2024-12-02 to 2024-12-15', 'Monday to Friday 8:30 AM to 4:30 PM', '2024-10-28, 2024-11-01');
+
+
+INSERT INTO `student`(`id_student`, `stu_name`, `stu_first_name`, `stu_date_birth`, `stu_adress_resid`, `stu_univ_mail`, `stu_phone_num`, `stu_gender`, `stu_nationality`, `stu_current_level`, `id_department`) 
+VALUES (51, 'Dupont', 'Jean', '1998-01-01', '12 Rue du Soleil, 75000 Paris', 'jean.dupont@univ-amu.fr', '01 23 45 67 89', 'M', 'France', 'Bachelor', 10),
+      (52, 'Martin', 'Marie', '1999-02-02', '34 Avenue des Champs-Élysées,75000 Paris', 'marie.martin@univ-amu.fr', '02 45 67 89 01', 'F', 'France', 'Master', 7),
+      (53, 'Adoukonou', 'Martin', '2002-04-04', '42 Boulevard Voltaire, 13006 Marseille', 'adoukonou.martin@univ-amu.fr', '04 91 82 73 64', 'F', 'France', 'Bachelor', 8),
+       (54, 'Boulanki', 'Bertrand', '2001-05-05', '8 Rue des Cyprès, 84000 Avignon', 'boulanki.bertrand@univ-amu.fr', '04 90 87 65 43', 'M', 'France', 'Master', 5),
+       (55, 'Koovi', 'Dubois', '2003-06-06', '3 Impasse des Lilas, 06000 Nice', 'koovi.dubois@univ-amu.fr', '06 10 98 76 54', 'F', 'France', 'Bachelor', 6),
+       (56, 'Antoine', 'Durant', '2000-07-07', '12 Avenue du Soleil, 31000 Toulouse', 'antoine.durant@univ-amu.fr', '05 61 42 33 22', 'M', 'France', 'Master', 9),
+       (57, 'Emma', 'Leroy', '1999-08-08', '24 Quai de la Gare, 69000 Lyon', 'emma.leroy@univ-amu.fr', '07 89 65 43 21', 'F', 'France', 'PhD', 4),
+       (58, 'Nathan', 'Faure', '2002-09-09', '56 Rue Victor Hugo, 44000 Nantes', 'nathan.faure@univ-amu.fr', '02 40 76 54 32', 'M', 'France', 'Bachelor', 3),
+       (59, 'Lyon', 'Garcia', '2001-10-10', '78 Chemin des Fleurs, 35000 Rennes', 'lyon.garcia@univ-amu.fr', '02 23 54 67 89', 'F', 'Spain', 'Master', 5),
+       (60, 'Koffi', 'Roussel', '2003-11-11', '92 Rue du Commerce, 57000 Metz', 'koffi.roussel@univ-amu.fr', '03 87 96 85 74', 'M', 'France', 'Bachelor', 2),
+       (61, 'Camille', 'Petit', '2000-12-12', '134 Avenue de Paris, 92000 Nanterre', 'camille.petit@univ-amu.fr', '01 46 10 20 30', 'F', 'France', 'Master', 1),
+       (62, 'Akonakpo', 'Blanc', '1999-01-01', '258 Route de Grenoble, 73000 Chambéry', 'akonakpo.blanc@univ-amu.fr', '04 79 32 45 67', 'M', 'France', 'PhD', 2);
+
+
+INSERT INTO `student_housing`(id_accomodation,`type_accomodation`, `area`, `availability`, `location`, `price`, `service_included`, `time_accomodation`, `rental_start`, `rental_end_date`, `id_student`)
+VALUES (71, 'T2 apartment','La Blancarde','Yes','12 Rue du Soleil, 75000 Paris','650€','Water, Electricity','Full Year','2024-09-01','2025-06-30',57),
+(72, 'Single room in student residence','Saint-Just','Yes','34 Avenue des Champs-Élysées,75000 Paris','380€ (including meals)','Meals, Internet, Laundry','Full Year','2024-09-01','2025-06-30',58),
+ (73, 'Studio','Joliette','Yes','42 Boulevard Voltaire, 13006 Marseille','480€','Internet','6 Months','2024-02-01','2024-07-31',59),
+ (74, 'Shared apartment (3 bedrooms)','La Pointe Rouge','Yes','8 Rue des Cyprès, 84000 Avignon','800€ (266€ per person)','None','Full Year','2024-09-01','2025-06-30',60), 
+ (75, 'Studio','Castellane','No (available from 01/07/2024)','3 Impasse des Lilas, 06000 Nice','400€','Internet','Full Year','2024-07-01','2025-06-30',61),
+ (76, 'Single room in private apartment','La Timone','Yes','12 Avenue du Soleil, 31000 Toulouse','400€ (including electricity)','Internet, Laundry','Full Year','2024-09-01','2025-06-30',62),
+  (77, 'Studio in student residence','Luminy','Yes','24 Quai de la Gare, 69000 Lyon','360€','Internet, Water','Full Year','2024-09-01','2025-06-30',56),
+  (78, 'T3 apartment','Saint-Antoine','Yes','56 Rue Victor Hugo, 44000 Nantes','700€','None','Full Year','2024-09-01','2025-06-30',55),
+  (79, 'Shared apartment (2 bedrooms)','Endoume','Yes','78 Chemin des Fleurs, 35000 Rennes','550€ (275€ per person)','Internet, Electricity','Full Year','2024-09-01','2025-06-30',54),
+  (80, 'Furnished studio','Vieux-Port','No (available from 01/03/2024)','92 Rue du Commerce, 57000 Metz','520€','Internet, Water','6 Months','2024-03-01','2024-08-31',53),
+  (81, 'Single room in townhouse','Belsunce','Yes','134 Avenue de Paris, 92000 Nanterre','350€ (including meals)','Internet, Laundry','Full Year','2024-09-01','2025-06-30',52),
+  (82, 'Studio in recent building','La Canebière','Yes','258 Route de Grenoble, 73000 Chambéry','430€','Internet, Water','Full Year','2024-09-01','2025-06-30',51);
+
+
+INSERT INTO `student_parents`(`id_parents`, `id_student`, `father_name`, `mother_name`, `parent_marital_status`, `father_occupation`, `mother_occupation`) 
+VALUES (001,51, 'Pierre Dupont', 'Marie Durand', 'Married', 'Software Engineer', 'Teacher'),
+(002,52,'Jean Martin', 'Sophie Dubois', 'Not Married', 'Doctor', 'Accountant'),
+(003,53, 'David Adoukonou', 'Marion Marcelle', 'Divorced', 'Pilot', 'teacher'),
+(004,54, 'Alfred Boulanki', 'Alice Lefèvre', 'Divorced', 'engineer', 'Lawyer'),
+(005,55,'Alexandre Dubois', 'Catherine Noir', 'Married', 'Manager', 'educator'),
+(006,56, 'Paul Durant', 'Nathalie', 'Divorced', 'Entrepreneur', 'Stay-at-home '),
+(007,57, 'Maxence Emma', 'Léa Petitjean', 'Married', 'Circus Performer', 'Artist'),
+(008,58, 'Jean Nathan', 'Claire Martin', 'Divorced', 'mason', 'Web Developer'),
+(009,59, 'Thomas Lyon', 'Aurélie Durand', 'Married', 'Business Analyst', 'Architect'),
+(0010,60, 'Manuel Koffi', 'Anna Schmidt', 'Not Married', 'Engineer', 'Psychologist'),
+(0011,61, 'Salami Mouda', 'Rachou LaPetite', 'Not Married', 'officer', 'dentist'),
+(0012,62, 'Bede Soufi', 'An Maria', 'Married', 'military', 'nurse');
+
+
+INSERT INTO `student_transport`(`id_transport`, `id_student`, `type_transport`, `travel_duration`, `distance_traveled`, `cost_transport`, `subscription_cards`, `transport_preferred`)
+
+VALUES 
+(83, 51, 'Bus', '30 minutes', '5 km', '30€ (monthly)', 'Yes (monthly bus pass)', 'Bus'),
+(84, 52, 'Bike (primary), Public Transport (occasional)', '20 minutes (bike), Varies (public transport)', '3 km (bike), Varies (public transport)', '0€ (bike), Varies (public transport)', 'No', 'Bike'),
+(85,53, 'Walking', '10 minutes', '1 km', '0€', 'No', 'Walking'),
+(86, 54, 'Carpooling', '45 minutes', '20 km', 'Shared gas expenses', 'No', 'Carpooling (when available)'),
+(87, 55, 'Scooter', '15 minutes', '7 km', '50€ (gas per month)', 'No', 'Scooter'),
+(88, 56, 'Public Transport (primary), Bike (when weather is nice)', '45 minutes (public transport), 20 minutes (bike)', '10 km (public transport), 3 km (bike)', '40€ (monthly pass), 0€ (bike)', 'Yes (monthly pass)', 'Public Transport (primary), Bike (when weather is nice)'),
+(89, 57, 'Train', '1 hour', '50 km', '80€ (monthly train pass)', 'Yes (monthly train pass)', 'Train'),
+(90, 58, 'University Shuttle', '20 minutes', '10 km', '0€ (free shuttle)', 'No', 'University Shuttle'),
+(91, 59, 'Walking (primary), Carpooling (occasionally)', '30 minutes (walking), Varies (carpooling)', '2 km (walking), Varies (carpooling)', '0€ (walking), Varies (carpooling)', 'No', 'Walking (primary), Carpooling (occasionally)'),
+(92, 60, 'Electric Scooter', '15 minutes', '5 km', '50€ (scooter purchase)', 'No', 'Electric Scooter'),
+(93, 61, 'Public Transport (primary), Walking (last part)', '30 minutes (public transport), 10 minutes (walking)', '8 km (public transport), 1 km (walking)', '30€ (monthly pass)', 'Yes (monthly pass)', 'Public Transport (primary), Walking (last part)'),
+(94, 62, 'Metro (primary), Bus (occasionally)', '45 minutes (metro), 30 minutes (bus)', '15 km (metro), 10 km (bus)', '45€ (monthly pass)', 'Yes (monthly pass)', 'Metro (primary), Bus (occasionally)');
+
+
+INSERT INTO `internship`(`id_internship`, `id_student`, `duration_internship`, `enterprise_name`, `enterprise_location`)
+
+VALUES (1011, 61, '6 months', 'Technovation Inc.', 'Paris, France'),
+(1012, 62, '3 months', 'Milano Fashion Group', 'Milan, Italy'),
+(1013, 53, '4 months (remote)', 'Global Web Solutions', 'Remote'),
+(1014, 54, '1 year', 'Federal Environment Agency', 'Berlin, Germany'),
+(1015, 55, '6 months', 'Evergreen Publishing Co.', 'New York, USA'),
+(1016, 56, '8 months (remote)', 'Institute for Data Science Research', 'Remote'),
+(1017, 57, '6 months', 'Global Bank plc', 'London, United Kingdom'),
+(1018, 58, '3 months', 'Empowering Communities Inc.', 'Chicago, USA'),
+(1019, 59, '1 year', 'Gearhead Motors GmbH', 'Stuttgart, Germany'),
+(10110, 60, '6 months (flexible schedule)', 'Buzzworthy Marketing Inc.', 'San Francisco, USA'),
+(10111, 51, '10 weeks (summer program)', 'Justice & Associates Law Firm', 'New York, USA'),
+(10112, 52, '6 months', 'Quantum Games Inc.', 'Montreal, Canada');
+
+
+INSERT INTO `scholarships`(`id_scholarship`, `scholarship_name`, `description`, `eligibility_criteria`, `amount`, `duration`, `application_deadline`, `selection_process`, `status`, `id_student`) 
+VALUES (401, 'University Merit Scholarship', 'Awarded to students with outstanding academic achievement', 'GPA above 3.75, Strong extracurricular involvement', '€5,000 per year', 'Bachelor studies', 'May 1st', 'Based on academic merit and application essay', 'Active', 51),
+(402, 'Need-Based Financial Aid Scholarship', 'Provides financial aid to students with demonstrated financial need.', 'Family income below a certain threshold, Good academic standing', 'Variable amount (tuition and fees)', 'Bachelor studies', 'March 1st', 'Based on financial need and application essay', 'Active', 52),
+(403, 'STEM Scholarship', 'Encourages students pursuing degrees in Science, Technology, Engineering, and Math.', 'Declared major in a STEM field, Strong academic record in math and science', '€7,500 per year', 'Bachelor studies', 'April 15th', 'Based on academic merit, standardized test scores, and a letter of intent', 'Active', 53),
+(404, 'Minority Student Scholarship', 'Supports students from underrepresented minority groups.', 'Belonging to a designated minority group, Minimum GPA requirement', '€2,000 per year', 'Bachelor studies', 'June 1st', 'Based on academic merit, application essay, and community involvement', 'Active', 54),
+(405, 'Study Abroad Scholarship', 'Provides financial support for students participating in international exchange programs.', 'Accepted into a semester or year-long study abroad program, Minimum GPA requirement', 'Variable amount (travel and living expenses)', 'Exchange semester/year', 'February 1st', 'Based on academic merit, application essay, and program relevance', 'Active', 55),
+(406, 'Research Scholarship', 'Supports undergraduate or graduate students engaged in faculty-mentored research projects.', 'Strong academic record in relevant field, Proven research experience (for graduate students), Proposal outlining research project', '€3,000 per semester (living stipend)', 'Varies (semester or year-long)', 'October 1st', 'Based on academic merit, research proposal quality, and faculty recommendation', 'Active', 56),
+(407, 'Internship Scholarship', 'Provides financial assistance for students completing internships related to their field of study.', 'Declared major in a relevant field, Secured internship position at a qualified organization', '€2,500 (one-time award)', 'Varies (internship duration)', 'March 15th', 'Based on academic merit, internship relevance, and employer recommendation letter', 'Active', 57),
+(408, 'Thesis/Dissertation Scholarship', 'Supports graduate students in the final stages of their thesis or dissertation writing.', 'Enrolled in a graduate program, Approval of thesis/dissertation proposal by advisor', '€5,000 (one-time award)', 'Up to 1 year', 'April 1st', 'Based on academic merit, thesis/dissertation proposal quality, and faculty recommendation', 'Active', 58),
+(409, 'Alumni Scholarship', 'Granted to outstanding students by generous alumni donations.', 'Strong academic record, Demonstrated leadership and extracurricular involvement', '€10,000 per year', 'Bachelor studies', 'February 1st', 'Holistic selection process considering academic merit, personal statement, and letters of recommendation', 'Active', 59),
+(410, 'Conference Travel Scholarship', 'Helps students present their research at academic conferences.', 'Accepted research paper for a relevant academic conference, Limited funding available', '€1,500 (covers travel and accommodation)', 'One-time award', 'Rolling deadline (apply at least 2 months before conference)', 'Based on research quality, conference relevance, and budget availability', 'Active', 60),
+(411, 'Book Award Scholarship', 'Recognizes outstanding academic achievement in a specific discipline.', 'Highest GPA in a particular department or program each semester', '€500 worth of course textbooks', 'One-time award per semester', 'Automatic upon achieving the highest GPA', 'Departmental announcement of recipients each semester', 'Active', 61),
+(412, 'Military Scholarship', 'Provides financial assistance to students committed to serving in the military after graduation.', 'Acceptance into a qualifying military service program, Minimum GPA requirement, Meet physical fitness standards', 'Variable amount (covers full or partial tuition and fees)', 'Bachelor studies', 'November 1st', 'Based on academic merit, commitment to military service, and physical fitness evaluation',  'Active', 62);
+
+
+INSERT INTO univ_faculty (id_faculty, id_student, id_department, faculty_name, responsible_faculty, employees_number, student_number, faculty_code, department_number, faculty_status) 
+VALUES
+(3002, 53, 3, 'Faculty of Arts', 'Prof. Johnson', 40, 600, 'FOA', 20, 'active'),
+(3002, 54, 2, 'Faculty of Engineering', 'Dr. Williams', 60, 700, 'FOE', 30, 'active'),
+(3002, 55, 8, 'Faculty of Business', 'Dr. Brown', 55, 550, 'FOB', 40, 'active'),
+(3001, 56, 4, 'Faculty of Medicine', 'Dr. Davis', 70, 800, 'FOM', 50, 'active'),
+(3003, 57, 6, 'Faculty of Law', 'Prof. Miller', 45, 450, 'FOL', 60, 'active'),
+(3003, 58, 5, 'Faculty of Social Sciences', 'Dr. Wilson', 65, 650, 'FOSS', 70, 'active'),
+(3001, 59, 7, 'Faculty of Education', 'Prof. Martinez', 35, 350, 'FOE', 80, 'active'),
+(3002, 60, 9, 'Faculty of Agriculture', 'Dr. Taylor', 75, 750, 'FOA', 90, 'active'),
+(3003, 51, 10, 'Faculty of Architecture', 'Prof. Garcia', 30, 300, 'FOA', 100, 'active'),
+(3003, 52, 1, 'Faculty of Pharmacy', 'Dr. Rodriguez', 80, 850, 'FOP', 110, 'active');
+
+
+
+INSERT INTO student_absences (id_absence, id_student, date_absence, class_missed, id_prof, absence_reason, absence_duration, absence_status, absence_sanction) 
+VALUES
+(4001, 51, '2024-05-01', 'Mathematics', 310, 'Illness', 'Half day', 'pending', 'None'),
+(4002, 53, '2024-05-02', 'History', 302, 'Family emergency', 'Full day', 'approved', 'Written warning'),
+(4003, 55, '2024-05-03', 'Economy', 303, 'Appointment', 'Half day', 'pending', 'None'),
+(4004, 57, '2024-05-04', 'Economy', 303, 'Personal reasons', 'Full day', 'pending', 'None'),
+(4005, 59, '2024-05-05', 'Chemistry', 309, 'Transportation issues', 'Half day', 'approved', 'Extra assignment'),
+(4006, 60, '2024-05-06', 'English Literature', 306, "Doctor's appointment", 'Half day', 'pending', 'None'),
+(4007, 58, '2024-05-07', 'Physical Education', 308, 'Injury', 'Full day', 'approved', 'Make-up assignment'),
+(4008, 56, '2024-05-08', 'Geography', 302, 'Family event', 'Half day', 'pending', 'None'),
+(4009, 54, '2024-05-09', 'Computer Science', 301, 'Technical issue', 'Full day', 'pending', 'None'),
+(4010, 52, '2024-05-10', 'Chemistry', 309, 'Art competition', 'Half day', 'approved', 'Participation certificate');
+
+
+
+INSERT INTO registrations (id_registrations, id_student, id_course, semester_regist, year_integration, date_regist, univ_component, sector_regist, id_department)
+VALUES
+(101, 51, 201, 'Fall', 2023, '2023-09-10', 'Component A', 'Sector 1', 1),
+(102, 52, 202, 'Fall', 2023, '2023-09-11', 'Component B', 'Sector 2', 2),
+(103, 53, 203, 'Spring', 2024, '2024-01-15', 'Component C', 'Sector 1', 3),
+(104, 54, 204, 'Spring', 2024, '2024-01-16', 'Component D', 'Sector 2', 4),
+(105, 55, 205, 'Summer', 2024, '2024-06-20', 'Component B', 'Sector 1', 5),
+(106, 56, 206, 'Summer', 2024, '2024-06-21', 'Component C', 'Sector 2', 6),
+(107, 57, 207, 'Fall', 2024, '2024-09-10', 'Component A', 'Sector 1', 7),
+(108, 58, 208, 'Fall', 2024, '2024-09-11', 'Component B', 'Sector 2', 8),
+(109, 59, 209, 'Spring', 2022, '2022-01-15', 'Component E', 'Sector 1', 9),
+(110, 60, 210, 'Spring', 2021, '2021-01-16', 'Component A', 'Sector 2', 10);
+
+
+INSERT INTO notes (id_student, id_course, mean_semester, year_graduation, type_evaluation, mention, validity_year, rank_student) 
+VALUES
+(51, 201, 13.50, 2024, 'Exam', 'Pass', 2025, 'First Class'),
+(52, 202, 15.23, 2023, 'Assignment', 'Pass', 2024, 'Second Class'),
+(53, 203, 18.56, 2025, 'Project', 'Pass with honors', 2026, 'Second Class'),
+(54, 204, 9.54 , 2024, 'Exam', 'Fail', 2025, 'tenth'),
+(55, 205, 14.52, 2022, 'Exam', 'Pass', 2023, 'Second Class'),
+(56, 206, 17.53, 2025, 'Assignment', 'Pass', 2026, 'Third Class'),
+(57, 207, 11.85, 2024, 'Exam', 'Pass', 2025, 'First Class'),
+(58, 208, 16.98, 2023, 'Assignment', 'Pass', 2024, 'Second Class'),
+(59, 209, 19, 2025, 'Project', 'Pass with honors', 2026, 'First Class'),
+(60, 210, 8.20, 2024, 'Exam', 'Fail', 2025, 'twentieth');
+
+
+
+INSERT INTO campus_jobs (id_job, position_title, description, workplace, working_hours, salary, supervisor, start_date, end_date, employment_status, id_student) 
+VALUES
+(501, 'Retail Associate', 'Assisting customers with purchases', 'Local Retail Store', '15 hours/week', '11.50/hour', 'Ms. Johnson', '2024-05-01', '2024-08-31', 'Part-time', 51),
+(502, 'Restaurant Server', 'Taking orders and serving food', 'Café', '20 hours/week', '12.00/hour', 'Mr. Garcia', '2024-05-01', '2024-08-31', 'Part-time', 52),
+(503, 'Delivery Driver', 'Delivering packages to customers', 'Courier Company', '10 hours/week', '14.00/hour', 'Mr. Martinez', '2024-05-01', '2024-08-31', 'Part-time', 53),
+(504, 'Sales Representative', 'Promoting products and closing sales', 'Marketing Agency', '15 hours/week', '13.00/hour', 'Ms. Brown', '2024-05-01', '2024-08-31', 'Part-time', 54),
+(505, 'Customer Service Representative', 'Assisting customers with inquiries', 'Call Center', '20 hours/week', '12.50/hour', 'Mr. Thompson', '2024-05-01', '2024-08-31', 'Part-time', 55),
+(506, 'Freelance Writer', 'Creating content for various clients', 'Remote', 'Flexible hours', '15.00/hour', 'N/A', '2024-05-01', '2024-08-31', 'Part-time', 56),
+(507, 'Social Media Coordinator', 'Managing social media accounts', 'Remote', 'Flexible hours', '14.00/hour', 'N/A', '2024-05-01', '2024-08-31', 'Part-time', 57),
+(508, 'Graphic Designer', 'Designing graphics for clients', 'Freelance', 'Flexible hours', '16.00/hour', 'N/A', '2024-05-01', '2024-08-31', 'Part-time', 58),
+(509, 'Personal Trainer', 'Providing fitness training sessions', 'Local Gym', '15 hours/week', '20.00/hour', 'Mr. Rodriguez', '2024-05-01', '2024-08-31', 'Part-time', 59),
+(510, 'Event Coordinator Assistant', 'Assisting in event planning', 'Event Management Company', '10 hours/week', '13.50/hour', 'Ms. White', '2024-05-01', '2024-08-31', 'Part-time', 60);
+
+
+INSERT INTO Tutoring_mentoring (type_program, mentor_field_study, availability_tutors, number_stud_tutors, id_student, tutoring_session, program_objective, contact_mentors)
+VALUES
+    ('Tutoring program', 'Computer Science', 'Monday and Wednesday from 2 pm to 4 pm', '5', 51, 'Room 203', 'Improve programming skills', 'tutor@gmail.com'),
+    ('Mentoring program', 'Business Management', 'Tuesday and Thursday from 10 am to 12 pm', '4', 54, 'Room 305', 'Develop leadership skills', 'mentor@orange.fr'),
+    ('Tutoring program', 'Social Sciences', 'Wednesday from 4 pm to 6 pm', '4', 52, 'Room 104', 'Help students prepare for exams', 'science-so@example.com'),
+    ('Mentoring program', 'Psychology', 'Friday from 1 pm to 3 pm', '2', 55, 'Room 402', 'Support students in their personal development', 'psycho@univ-amu.fr'),
+    ('Tutoring program', 'Mathematics', 'Monday and Thursday from 6 pm to 8 pm', '6', 53, 'Room 201', 'Strengthen algebra skills', 'maths-tuto@gmail.com'),
+    ('Mentoring program', 'Creative Arts', 'Tuesday from 2 pm to 4 pm', '3', 60, 'Room 303', 'Artistic inspiration and advice', 'mentor-art@yahoo.com'),
+    ('Tutoring program', 'Foreign Languages', 'Wednesday from 10 am to 12 pm', '4', 58, 'Room 102', 'Improve pronunciation and grammar', 'foreign@xampp.com'),
+    ('Mentoring program', 'Engineering', 'Thursday from 3 pm to 5 pm', '2', 57, 'Room 401', 'Career guidance and advice', 'genie-mentor@hotmail.com'),
+    ('Tutoring program', 'Natural Sciences', 'Friday from 4 pm to 6 pm', '5', 56, 'Room 202', 'Understand biology concepts', 'bio-tuto@gmail.com'),
+    ('Mentoring program', 'Physical Education', 'Monday from 12 pm to 2 pm', '3', 59, 'Room 304', 'Promote an active lifestyle', 'suaps@gmail.com');
+
+
+INSERT INTO International_relationship (exchange_program, international_partnership, id_student, partner_university, country, program_duration, main_contact)
+VALUES
+    ('Exchange program', 'University partnership', 60, 'University A', 'United States', '1 year', 'international@example.com'),
+    ('Exchange program', 'University partnership', 59, 'University B', 'Canada', '1 semester', 'exchange@example.com'),
+    ('Cooperation program', 'Research collaboration', 58, 'University C', 'France', '2 years', 'research@example.com'),
+    ('Exchange program', 'University partnership', 54, 'University D', 'Germany', '1 year', 'international@example.com'),
+    ('Cooperation program', 'Research collaboration', 57, 'University E', 'Japan', '3 years', 'research@example.com'),
+    ('Exchange program', 'University partnership', 56, 'University F', 'Australia', '1 semester', 'exchange@example.com'),
+    ('Cooperation program', 'Research collaboration', 55, 'University G', 'United Kingdom', '2 years', 'research@example.com'),
+    ('Exchange program', 'University partnership', 53, 'University H', 'Spain', '1 year', 'international@example.com'),
+    ('Cooperation program', 'Research collaboration', 52, 'University I', 'China', '3 years', 'research@example.com'),
+    ('Exchange program', 'University partnership', 51, 'University J', 'Brazil', '1 semester', 'exchange@example.com');
+
+
+INSERT INTO Professional_integration (graduation_year, degree_obtained, latency_time_before_insertion, id_student, salary_obtaines, type_contract_obtaines)
+VALUES
+    ('2022', "Bachelor's degree in Computer Science", '3 months', 51, '50000 €', 'Permanent contract'),
+    ('2021', "Master's degree in Business Management", '6 months', 52, '60000 €', 'Permanent contract'),
+    ('2023', "Bachelor's degree in Electrical Engineering", '1 month', 53, '55000 €', 'Fixed-term contract'),
+    ('2020', 'Ph.D. in Molecular Biology', '2 months', 54, '70000 €', 'Permanent contract'),
+    ('2022', "Bachelor's degree in Psychology", '4 months', 55, '48000 €', 'Fixed-term contract'),
+    ('2021', "Master's degree in Marketing", '5 months', 56, '52000 €', 'Permanent contract'),
+    ('2023', "Bachelor's degree in Law", '2 months', 57, '58000 €', 'Fixed-term contract'),
+    ('2020', 'Ph.D. in Quantum Physics', '3 months', 58, '65000 €', 'Permanent contract'),
+    ('2022', "Bachelor's degree in Graphic Design", '1 month', 59, '47000 €', 'Fixed-term contract'),
+    ('2021', "Master's degree in Political Science", '4 months', 60, '51000 €', 'Permanent contract');
+
+
+INSERT INTO Research_project (field_project, id_student, name_supervisor, writing_start_date, cost_project, status_project)
+VALUES
+    ('Artificial Intelligence', 51, 'Dr. Dupont', '2023-01-15', '5000 €', 'Ongoing'),
+    ('Molecular Biology', 52, 'Prof. Smith', '2022-09-01', '8000 €', 'Completed'),
+    ('Quantum Physics', 53, 'Dr. Lee', '2023-03-10', '6500 €', 'Ongoing'),
+    ('Organic Chemistry', 54, 'Prof. Johnson', '2022-11-20', '7200 €', 'Ongoing'),
+    ('Behavioral Economics', 55, 'Dr. Garcia', '2023-02-05', '5500 €', 'Ongoing'),
+    ('Prehistoric Archaeology', 56, 'Prof. Martin', '2022-10-15', '6800 €', 'Completed'),
+    ('Quantum Computing', 57, 'Dr. Wang', '2023-04-01', '6000 €', 'Ongoing'),
+    ('Social Sciences', 58, 'Prof. Brown', '2022-12-10', '5900 €', 'Completed'),
+    ('Civil Engineering', 59, 'Dr. Kim', '2023-05-20', '7000 €', 'Ongoing'),
+    ('Cognitive Psychology', 60, 'Prof. Adams', '2022-11-05', '5300 €', 'Completed');
+
+
+INSERT INTO Emergency_contacts (id_student, name_cont_emer, first_name_emer, number_cont_emer, location_cont_emer, status_cont_emer)
+VALUES
+    (51, 'Doe', 'John', 123456789, 'Paris', 'Active'),
+    (52, 'Smith', 'Jane', 987654321, 'Lyon', 'Inactive'),
+    (53, 'Martin', 'David', 555555555, 'Marseille', 'Active'),
+    (54, 'Garcia', 'Maria', 111222333, 'Toulouse', 'Inactive'),
+    (55, 'Lee', 'James', 444444444, 'Bordeaux', 'Active'),
+    (56, 'Lopez', 'Ana', 777777777, 'Nice', 'Inactive'),
+    (57, 'Chen', 'Michael', 888888888, 'Lille', 'Active'),
+    (58, 'Nguyen', 'Sophie', 999999999, 'Strasbourg', 'Inactive'),
+    (59, 'Kim', 'Daniel', 666666666, 'Nantes', 'Active'),
+    (60, 'Adams', 'Emily', 222333444, 'Montpellier', 'Inactive');
+
+-- ________________________Joining for updating_________________________
+
+UPDATE Student
+Inner JOIN student_housing ON Student.id_student = student_housing.id_student
+SET Student.id_accomodation = student_housing.id_accomodation;
+
+UPDATE Student
+JOIN scholarships ON Student.id_student = scholarships.id_student
+SET Student.id_scholarship = scholarships.id_scholarship;
+
+UPDATE Student
+JOIN internship ON Student.id_student = internship.id_student
+SET Student.id_internship = internship.id_internship;
+
+UPDATE Student
+JOIN campus_jobs ON Student.id_student = campus_jobs.id_student
+SET Student.id_job = campus_jobs.id_job;
+
+UPDATE Student
+JOIN international_relationship ON Student.id_student = international_relationship.id_student
+SET Student.id_relation_inter = international_relationship.id_relation_inter;
+
+UPDATE Student
+JOIN professional_integration ON Student.id_student = professional_integration.id_student
+SET Student.id_insertion = professional_integration.id_insertion;
+
+ 
+-- __________________________Simple Queries___________________________
+
+
+-- Get the total number of students in the "notes" table:
+SELECT COUNT(id_student) AS total_students FROM notes;
+
+-- Get all information on the "scholarships" table:
+SELECT * FROM scholarships;
+
+-- Identify student absences and their corresponding dates:
+SELECT id_absence, date_absence FROM student_absences;
+
+-- Retrieve job titles and offered salaries for campus jobs:
+SELECT position_title, salary FROM campus_jobs;
+
+-- List of student services with descriptions and contact details:
+SELECT name_service, description_service, contact_detail
+FROM student_services;
+
+
+-- ______________________Queries with WHERE Clause____________________________
+
+-- All student absences due to illness:
+SELECT * FROM student_absences WHERE absence_reason = 'Illness';
+
+-- Select all columns in the "borrowed_books_lib" table where the category of borrowed books is "Science":
+SELECT * FROM borrowed_books_lib WHERE category = 'Science';
+
+-- Select data for students with permanent contracts in the Professional integration table:
+SELECT * FROM professional_integration WHERE type_contract_obtaines = 'Permanent contract';
+
+-- Retrieve data of students who obtained Fixed-term contract from the "Professional integration" table:
+SELECT * FROM professional_integration WHERE type_contract_obtaines = 'Fixed-term contract';
+
+-- Select data for students with salaries over €55,000 from the Professional integration table :
+SELECT * FROM professional_integration WHERE salary_obtaines > 55000;
+
+-- ________________________Queries with ORDER BY Clause___________________________
+
+-- campus jobs, sorted by hours worked: 
+SELECT * FROM campus_jobs ORDER BY working_hours;
+
+-- Sort departments alphabetically by department name:
+SELECT * FROM departments ORDER BY dep_name ASC;
+
+-- Sort professors alphabetically by last name:
+SELECT * FROM professor ORDER BY first_name_prof ASC;
+
+-- Sort borrowed books by ascending borrowing date
+SELECT * FROM borrowed_books_lib ORDER BY borrowing_date ASC;
+
+-- Select all students but sort in ascending order by name:
+SELECT * FROM `student` order by stu_first_name;
+
+-- _______________________Multi-Table Queries________________________________
+
+-- Query to obtain details of students enrolled in courses with corresponding grades:
+SELECT r.id_registrations, r.id_student, r.id_course, r.semester_regist, r.year_integration, r.date_regist,
+       r.univ_component, r.sector_regist, r.id_department,
+       n.mean_semester, n.year_graduation, n.type_evaluation, n.mention, n.validity_year, n.rank_student
+FROM registrations r
+INNER JOIN notes n ON r.id_student = n.id_student AND r.id_course = n.id_course
+WHERE r.semester_regist = 'Fall' AND r.year_integration = 2024;
+
+-- Query to obtain details of students enrolled in courses in the Fall 2024 semester with their corresponding grades:
+SELECT r.id_registrations, r.id_student, r.id_course, r.semester_regist, r.year_integration, r.date_regist,
+       r.univ_component, r.sector_regist, r.id_department,
+       n.mean_semester, n.year_graduation, n.type_evaluation, n.mention, n.validity_year, n.rank_student
+FROM registrations r
+JOIN notes n ON r.id_student = n.id_student AND r.id_course = n.id_course;
+
+-- Select student housing information with parent names for available housing:
+SELECT sh.id_accomodation, sh.type_accomodation, sh.area, sh.availability, sh.location, sh.price, sh.service_included, sh.time_accomodation, sh.rental_start, sh.rental_end_date,
+       sp.father_name, sp.mother_name, sp.parent_marital_status, sp.father_occupation, sp.mother_occupation
+FROM student_housing sh
+JOIN student_parents sp ON sh.id_student = sp.id_student
+WHERE sh.availability = 'Yes';
+
+-- Select exam details with associated class periods:
+SELECT ea.id_exam, ea.id_course, ea.matter, ea.type_exam, ea.duration_assessment, ea.examination_room, ea.number_student, ea.results,
+       c.class_period, c.holiday_period, c.review_period, c.courses_times, c.public_holidays
+FROM Exam_assessment ea
+JOIN calendar c ON ea.id_course = c.id_course;
+
+-- Join departments with campus information:
+SELECT d.dep_name, d.dep_manager, d.localisation_dep, d.phone_num_dep, d.email_dep, d.budget_dep, d.description_dep, d.number_employees, d.number_student_per_dep,
+       c.camp_location, c.camp_components
+FROM departments d
+JOIN campus c ON d.id_department = c.id_department;
+
+-- _____________________Queries with Aggregation Functions_________________________
+
+-- Calculate average grades:
+SELECT AVG(mean_semester) AS average_mean FROM notes;
+
+-- Calculate total budget for all departments:
+SELECT SUM(budget_dep) AS total_budget FROM departments;
+
+-- Calculate the difference between max and min rent:
+SELECT MAX(price) - MIN(price) AS price_difference FROM student_housing;
+
+-- Calculate average number of employees: 
+SELECT id_faculty, AVG(number_employees) AS avg_employees_per_faculty
+FROM departments;
+
+-- Total duration of all exams in hours
+SELECT SUM(duration_assessment) AS total_duration_hours
+FROM Exam_assessment;
+
+-- _______________________ Group By queries__________________________
+
+-- Group Students by Gender and Count the Number of Students in Each Gender:
+SELECT stu_gender, COUNT(*) AS student_count
+FROM Student
+GROUP BY stu_gender;
+
+-- Group Courses by Type and Count the Number of Courses in Each Type:
+SELECT type_course, COUNT(*) AS course_count
+FROM Course
+GROUP BY type_course;
+
+-- Group Registrations by Year of Integration and Count the Number of Registrations in Each Year:
+SELECT year_integration, COUNT(*) AS registration_count
+FROM Registrations
+GROUP BY year_integration;
+
+-- Group Notes by Year of Graduation and Calculate the Maximum Mention for Each Graduation Year:
+SELECT year_graduation, MAX(mention) AS max_mention
+FROM Notes
+GROUP BY year_graduation;
+
+
+-- Group Notes by Type of Evaluation and Calculate the Average Semester Mean for Each Type:
+SELECT type_evaluation, AVG(mean_semester) AS avg_semester_mean
+FROM Notes
+GROUP BY type_evaluation;
+
+-- ___________________________Nested Queries______________________________
+
+-- Find Students Who Have Registered for a Course in a Specific Department:
+
+SELECT id_student, stu_name, stu_first_name
+FROM Student
+WHERE id_student IN (
+    SELECT id_student
+    FROM Registrations
+    WHERE id_course IN (
+        SELECT id_course
+        FROM Course
+        WHERE disciplinary_area = 'Computer Science'
+    )
+);
+
+-- Calculate the Average Number of Credits per Course in Each Disciplinary Area:
+
+SELECT disciplinary_area, AVG(credits_ECTS) AS avg_credits
+FROM Course
+GROUP BY disciplinary_area
+HAVING AVG(credits_ECTS) > (
+    SELECT AVG(credits_ECTS)
+    FROM Course
+);
+
+-- Find the name of the departments which had registrations in 2024
+SELECT dep_name
+FROM departments
+WHERE id_department IN (
+    SELECT id_department
+    FROM registrations
+    where year_integration=2024
+);
+
+-- Find the name of all departments that have a budget greater than the average budget of all departments:
+SELECT dep_name
+FROM departments
+WHERE budget_dep > (
+    SELECT AVG(budget_dep)
+    FROM departments
+);
+
+
+-- Find Students Who Have Achieved a Higher mean Than the Average mean:
+
+SELECT id_student, stu_name, stu_first_name
+FROM Student
+WHERE id_student IN (
+    SELECT id_student
+    FROM Notes
+    WHERE mean_semester > (
+        SELECT AVG(mean_semester)
+        FROM Notes
+    )
+);
+-- _____________________________________________________________________
+
+
+
